@@ -4,5 +4,11 @@
         "src": "frontend/index.html",
         "use": "@vercel/static"
       }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/public/$1"
+      }
     ]
   }
