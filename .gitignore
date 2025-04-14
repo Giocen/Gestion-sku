@@ -1,0 +1,12 @@
+# Ignorar archivos de configuración y compilación
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store
+
+# Ignorar archivos específicos de Google Apps Script
+backend/.clasp.json
+
+# Ignorar carpetas locales
+nuevo-proyecto/
