@@ -126,17 +126,17 @@
         });
     }
 
-    // Ajuste de rutas, subiendo un nivel para acceder a la carpeta backend
+    // Ajuste de rutas, ahora apuntando a la carpeta public
     document.getElementById('btnIngreso').addEventListener('click', () => {
-      cargarFormulario('backend/FormularioEntrada.html');  // Ajusta las rutas para acceder correctamente
+      cargarFormulario('/FormularioEntrada.html');  // Ruta ajustada a la carpeta public
     });
 
     document.getElementById('btnSalida').addEventListener('click', () => {
-      cargarFormulario('backend/FormularioSalida.html');  // Ajusta las rutas para acceder correctamente
+      cargarFormulario('/FormularioSalida.html');  // Ruta ajustada a la carpeta public
     });
 
     document.getElementById('btnConsulta').addEventListener('click', () => {
-      cargarFormulario('backend/FormularioConsulta.html');  // Ajusta las rutas para acceder correctamente
+      cargarFormulario('/FormularioConsulta.html');  // Ruta ajustada a la carpeta public
     });
   </script>
 
