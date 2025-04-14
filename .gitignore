@@ -10,3 +10,4 @@ backend/.clasp.json
 
 # Ignorar carpetas locales
 nuevo-proyecto/
+.vercel
