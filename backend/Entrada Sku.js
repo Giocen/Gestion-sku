@@ -4,7 +4,6 @@ function onOpen() {
     .addItem("Abrir formulario de entrada", "mostrarFormularioEntrada")
     .addItem("Abrir formulario de salida", "mostrarFormularioSalida")
     .addItem("Abrir consulta de SKU", "mostrarFormularioConsulta")
-    .addItem("Abrir menú principal", "mostrarMenuPrincipal")
     .addItem("Transferir datos OH", "transferirDatosOH")
     .addToUi();
 }
@@ -29,31 +28,33 @@ function mostrarFormularioConsulta() {
   mostrarFormulario("FormularioConsulta", "Liverpool Mérida", 300, 300);
 }
 
-function mostrarMenuPrincipal() {
-  var html = HtmlService.createHtmlOutput(HtmlService.createHtmlOutputFromFile("Menu").getContent())
-    .setWidth(300)
-    .setHeight(400);
-
-  SpreadsheetApp.getUi().showModalDialog(html, "Gestión de SKU");
-}
-
 function registrarMovimiento(tipo, sku, ubicacion, cantidad) {
   var hojaNombre = tipo === "entrada" ? "Entrada Sku" : "Salida Sku";
   var hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(hojaNombre);
-  if (!hoja) return;
+  
+  if (!hoja) {
+    Logger.log("⚠ No se encontró la hoja: " + hojaNombre);
+    return;
+  }
 
   // Validar que la cantidad sea un número positivo
   cantidad = Number(cantidad);
   if (isNaN(cantidad) || cantidad <= 0) {
+    Logger.log("⚠ La cantidad debe ser un número positivo.");
     throw new Error("La cantidad debe ser un número positivo.");
   }
 
   var fechaHora = new Date();
   var fechaHoraFormateada = Utilities.formatDate(fechaHora, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
 
-  var cantidadFinal = tipo === "salida" ? +cantidad : cantidad;
+  var cantidadFinal = tipo === "salida" ? -cantidad : cantidad;
 
-  hoja.appendRow([sku, ubicacion, cantidadFinal, fechaHoraFormateada]);
+  try {
+    hoja.appendRow([sku, ubicacion, cantidadFinal, fechaHoraFormateada]);
+    Logger.log("✅ Movimiento registrado con éxito en la hoja: " + hojaNombre);
+  } catch (e) {
+    Logger.log("❌ Error al registrar movimiento: " + e.message);
+  }
 }
 
 function registrarEntrada(sku, ubicacion, cantidad) {
@@ -174,7 +175,7 @@ function transferirDatosOH() {
 
     hojaDestino.getRange(1, 2).setValue("✅ Transferencia completada con éxito.");
 
-    Logger.log("✅ Transferencia completada con éxito. Datos pegados en B1.");
+    Logger.log("✅ Transferencia completada con éxito.");
   } catch (e) {
     Logger.log("❌ Error: " + e.message);
   }
